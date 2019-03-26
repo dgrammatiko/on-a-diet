@@ -4,7 +4,7 @@
   "description": "remove Joomla's fat",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js"
   },
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
