@@ -103,4 +103,4 @@
       <div>
       ${ue}
       </div>
-        `}}le.define("hide-joomla-junk"),fetch("/js/json.json").then(function(t){return t.json()}).then(function(t){t.data.forEach(t=>{ie[t.type].push({name:t.name,folder:t.folder,clientId:t.client_id,enabled:t.enabled})}),ie.component=ie.component.sort(oe),ie.plugin=ie.plugin.sort(oe),ie.module=ie.module.sort(oe),ie.library=ie.library.sort(oe),ie.template=ie.template.sort(oe);const e=new le(t);document.body.appendChild(e)})}]);
+        `}}le.define("hide-joomla-junk"),fetch("https://dgrammatiko.github.io/on-a-diet/js/json.json").then(function(t){return t.json()}).then(function(t){t.data.forEach(t=>{ie[t.type].push({name:t.name,folder:t.folder,clientId:t.client_id,enabled:t.enabled})}),ie.component=ie.component.sort(oe),ie.plugin=ie.plugin.sort(oe),ie.module=ie.module.sort(oe),ie.library=ie.library.sort(oe),ie.template=ie.template.sort(oe);const e=new le(t);document.body.appendChild(e)})}]);
