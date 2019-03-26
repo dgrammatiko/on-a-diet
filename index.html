@@ -1,0 +1,43 @@
+<!-- By D. Grammatikogiannis-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="prelod" href="assets/css/opensans-light-webfont.woff2" as="font/woff2">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Description" content="Remove all the greasy, pure fat stuff from Joomla">
+  <title>Hide and hopefuly less seek</title>
+  <link rel="stylesheet" href="assets/css/css.css">
+  <!-- Polyfill Custom Elements by Andrea Giammarchi -->
+  <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
+  <link rel="modulepreload" href="assets/js/index.es6.js">
+</head>
+<body>
+  <noscript>No Javascript? No Joy for you then...</noscript>
+  <script>
+/** https://gist.github.com/samthor/64b114e4a4f539915a95b91ffd340acc */
+(function() {
+  var d = document;
+  var c = d.createElement('script');
+  if (!('noModule' in c) && 'onbeforeload' in c) {
+    var s = false;
+    d.addEventListener('beforeload', function(e) {
+      if (e.target === c) {
+        s = true;
+      } else if (!e.target.hasAttribute('nomodule') || !s) {
+        return;
+      }
+      e.preventDefault();
+    }, true);
+
+    c.type = 'module';
+    c.src = '.';
+    d.head.appendChild(c);
+    c.remove();
+  }
+}());</script>
+  <script type="module" src="assets/js/index.es6.js" ></script>
+  <script nomodule src="assets/js/index.es5.js"></script>
+</body>
+</html>

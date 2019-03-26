@@ -1,0 +1,27 @@
+{
+  "name": "removefat",
+  "version": "0.0.1",
+  "description": "remove Joomla's fat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dimitrios Grammatikogiannis",
+  "license": "MIT",
+  "dependencies": {
+    "file-saver": "^2.0.1",
+    "hyperhtml-element": "^3.6.0",
+    "jszip": "^3.1.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "compression-webpack-plugin": "^2.0.0",
+    "copy-webpack-plugin": "^5.0.2",
+    "http-server": "^0.11.1",
+    "path": "^0.12.7",
+    "terser-webpack-plugin": "^1.2.3",
+    "webpack": "^4.29.6"
+  }
+}
