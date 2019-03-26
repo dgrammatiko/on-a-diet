@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="https://dgrammatiko.github.io/on-a-diet/">
   <link rel="prelod" href="css/opensans-light-webfont.woff2" as="font/woff2">
+  <link rel="modulepreload" href="js/index.es6.js">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="Description" content="Remove all the greasy, pure fat stuff from Joomla">
   <title>Hide and hopefuly less seek</title>
-  <base href="https://dgrammatiko.github.io/on-a-diet/">
   <link rel="stylesheet" href="css/css.css">
   <!-- Polyfill Custom Elements by Andrea Giammarchi -->
   <script>this.customElements||document.write('<script src="//unpkg.com/document-register-element"><\x2fscript>');</script>
-  <link rel="modulepreload" href="js/index.es6.js">
 </head>
 <body>
   <noscript>No Javascript? No Joy for you then...</noscript>
@@ -39,6 +39,6 @@
   }
 }());</script>
   <script type="module" src="js/index.es6.js" ></script>
-  <script nomodule src="js/index.es5.js"></script>
+  <script nomodule defer src="js/index.es5.js"></script>
 </body>
 </html>
