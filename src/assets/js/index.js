@@ -250,7 +250,7 @@ class RemoveFatElement extends HyperHTMLElement {
 
   RemoveFatElement.define('hide-joomla-junk');
 
-  fetch('/assets/js/json.json')
+  fetch('/js/json.json')
   .then(function(response) {
     return response.json();
   })
