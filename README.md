@@ -1,5 +1,7 @@
 [The online version](https://dgrammatiko.github.io/on-a-diet/)
 
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+
 ### Installation
 
 
