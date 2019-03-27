@@ -1,3 +1,5 @@
+[The online version](https://dgrammatiko.github.io/on-a-diet/)
+
 ### Installation
 
 
