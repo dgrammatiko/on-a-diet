@@ -57,9 +57,6 @@ class plgSystemRemovefatInstallerScript {
         $db->execute();
       } catch (\\Exception $e) { }
 
-      jimport('joomla.filesystem.folder');
-      jimport('joomla.filesystem.file');
-
       if (is_dir(JPATH_ROOT . '/plugins/system/removefat')) {
         if (is_file(JPATH_ROOT . '/plugins/system/removefat/removefat.php')) {
           unlink(JPATH_ROOT . '/plugins/system/removefat/removefat.php');
