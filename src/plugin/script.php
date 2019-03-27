@@ -17,12 +17,12 @@ class plgSystemRemovefatInstallerScript {
       $query = $db->getQuery(true)
       ->update('#__extensions')
       ->set($db->qn('enabled') . ' = ' . (int) $options['enabled'])
-      ->where('type = ' . $db->quote($options['type']))
-      ->where('element = ' . $db->quote($element));
+      ->where('type = ' . $db->q($options['type']))
+      ->where('element = ' . $db->q($element));
 
       switch ($options['type']) {
         case 'plugin':
-          $query->where('folder = ' . $db->quote($options['folder']));
+          $query->where('folder = ' . $db->q($options['folder']));
           break;
         case 'language':
         case 'module':
@@ -46,18 +46,15 @@ class plgSystemRemovefatInstallerScript {
 
       $query = $db->getQuery(true)
       ->delete('#__extensions')
-      ->where('type = ' . $db->quote('plugin'))
-      ->where('element = ' . $db->quote('removefat'))
-      ->where('folder = ' . $db->quote('system'));
+      ->where('type = ' . $db->q('plugin'))
+      ->where('element = ' . $db->q('removefat'))
+      ->where('folder = ' . $db->q('system'));
 
       $db->setQuery($query);
 
       try {
         $db->execute();
       } catch (\Exception $e) { }
-
-      jimport('joomla.filesystem.folder');
-      jimport('joomla.filesystem.file');
 
       if (is_dir(JPATH_ROOT . '/plugins/system/removefat')) {
         if (is_file(JPATH_ROOT . '/plugins/system/removefat/removefat.php')) {
