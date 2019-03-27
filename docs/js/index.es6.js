@@ -7,7 +7,7 @@
       <thead>
         <tr class="table100-head">
         <th class="column1">Name</th>
-        <th class="column2">State</th>
+        <th class="column2">State   </th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +31,7 @@
         <tr class="table100-head">
         <th class="column1">Name</th>
         <th class="column2">Type</th>
-        <th class="column3">State</th>
+        <th class="column3">State   </th>
         </tr>
       </thead>
       <tbody>
@@ -56,7 +56,7 @@
         <tr class="table100-head">
         <th class="column1">Name</th>
         <th class="column2">Client</th>
-        <th class="column3">State</th>
+        <th class="column3">State   </th>
         </tr>
       </thead>
       <tbody>
@@ -81,7 +81,7 @@
         <tr class="table100-head">
         <th class="column1">Name</th>
         <th class="column2">Client</th>
-        <th class="column3">State</th>
+        <th class="column3">State   </th>
         </tr>
       </thead>
       <tbody>
