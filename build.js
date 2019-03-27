@@ -4,9 +4,18 @@
  * Brotli is build in for node >= 11.7.0!!!
  */
 const path = require('path');
+const fs = require('fs');
 const webpack = require("webpack");
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+
+// Create the data.js file from sources
+let dataJsContents = `const dataScript = \`` + fs.readFileSync('src/plugin/script.php', { encoding: 'utf8' }).replace(/\\/g, '\\\\') + `\`;`;
+dataJsContents += `const dataMain = \`` + fs.readFileSync('src/plugin/removefat.php', { encoding: 'utf8' }) + `\`;`;
+dataJsContents += `const dataXML = \`` + fs.readFileSync('src/plugin/removefat.xml', { encoding: 'utf8' }).replace(/\\/g, '\\\\') + `\`;`;
+dataJsContents += 'export { dataScript, dataMain, dataXML };'
+
+fs.writeFileSync('src/assets/js/data.js', dataJsContents);
 
 const commonConfig = {
   mode: "production",

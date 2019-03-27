@@ -18,7 +18,7 @@ class plgSystemRemovefatInstallerScript {
       ->update('#__extensions')
       ->set($db->qn('enabled') . ' = ' . (int) $options['enabled'])
       ->where('type = ' . $db->q($options['type']))
-      ->where('element = ' . $db->q($element));
+      ->where('name = ' . $db->q($element));
 
       switch ($options['type']) {
         case 'plugin':

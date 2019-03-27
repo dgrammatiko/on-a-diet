@@ -1,5 +1,4 @@
-const dataScript = `
-<?php
+const dataScript = `<?php
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\\CMS\\Factory;
@@ -18,12 +17,12 @@ class plgSystemRemovefatInstallerScript {
       $query = $db->getQuery(true)
       ->update('#__extensions')
       ->set($db->qn('enabled') . ' = ' . (int) $options['enabled'])
-      ->where('type = ' . $db->quote($options['type']))
-      ->where('name = ' . $db->quote($element));
+      ->where('type = ' . $db->q($options['type']))
+      ->where('name = ' . $db->q($element));
 
       switch ($options['type']) {
         case 'plugin':
-          $query->where('folder = ' . $db->quote($options['folder']));
+          $query->where('folder = ' . $db->q($options['folder']));
           break;
         case 'language':
         case 'module':
@@ -47,9 +46,9 @@ class plgSystemRemovefatInstallerScript {
 
       $query = $db->getQuery(true)
       ->delete('#__extensions')
-      ->where('type = ' . $db->quote('plugin'))
-      ->where('element = ' . $db->quote('removefat'))
-      ->where('folder = ' . $db->quote('system'));
+      ->where('type = ' . $db->q('plugin'))
+      ->where('element = ' . $db->q('removefat'))
+      ->where('folder = ' . $db->q('system'));
 
       $db->setQuery($query);
 
@@ -72,9 +71,7 @@ class plgSystemRemovefatInstallerScript {
     }
   }
 }
-`
-const dataMain = `<?php defined('_JEXEC') or die; class PlgSystemRemovefat extends JPlugin {}`;
-const dataXML = `<?xml version="1.0" encoding="utf-8"?>
+`;const dataMain = `<?php defined('_JEXEC') or die; class PlgSystemRemovefat extends JPlugin {}`;const dataXML = `<?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="plugin" group="system" method="upgrade">
   <name>Remove FAT</name>
   <author>Dimitrios Grammatikogiannis</author>
@@ -90,6 +87,4 @@ const dataXML = `<?xml version="1.0" encoding="utf-8"?>
     <filename plugin="removefat">removefat.php</filename>
   </files>
 </extension>
-`;
-
-export { dataScript, dataMain, dataXML }
+`;export { dataScript, dataMain, dataXML };
