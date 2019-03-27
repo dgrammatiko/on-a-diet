@@ -17,7 +17,7 @@
             <td class="column2">
               <div class="inputGroup">
                 <input tabindex="-1" id="${t.name+t.clientId}" name="option1" type="checkbox" value="${parseInt(t.enabled,10)}" checked="${1===parseInt(t.enabled,10)}"/>
-                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled":"Disabled"}</label>
+                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled ":"Disabled"}</label>
               </div>
             </td>
           </tr>
@@ -42,7 +42,7 @@
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${t.name+t.clientId}" name="option1" type="checkbox" value="${t.enabled}" checked="${1===parseInt(t.enabled,10)}"/>
-                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled":"Disabled"}</label>
+                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled ":"Disabled"}</label>
               </div>
               </td>
           </tr>
@@ -67,7 +67,7 @@
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${t.name+t.clientId}" name="option1" type="checkbox" value="${t.enabled}" checked="${1===parseInt(t.enabled,10)}"/>
-                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled":"Disabled"}</label>
+                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled ":"Disabled"}</label>
               </div>
           </td>
           </tr>
@@ -92,7 +92,7 @@
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${t.name+t.clientId}" name="option1" type="checkbox" value="${t.enabled}" checked="${1===parseInt(t.enabled,10)}"/>
-                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled":"Disabled"}</label>
+                <label for="${t.name+t.clientId}">${1===parseInt(t.enabled,10)?"Enabled ":"Disabled"}</label>
               </div>
             </td>
           </tr>

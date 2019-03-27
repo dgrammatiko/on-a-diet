@@ -149,7 +149,7 @@ class RemoveFatElement extends HyperHTMLElement {
             <td class="column2">
               <div class="inputGroup">
                 <input tabindex="-1" id="${com.name+com.clientId}" name="option1" type="checkbox" value="${parseInt(com.enabled,10)}" checked="${parseInt(com.enabled,10) === 1 ? true : false}"/>
-                <label for="${com.name+com.clientId}">${parseInt(com.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
+                <label for="${com.name+com.clientId}">${parseInt(com.enabled,10) === 1 ? 'Enabled ' : 'Disabled'}</label>
               </div>
             </td>
           </tr>
@@ -177,7 +177,7 @@ class RemoveFatElement extends HyperHTMLElement {
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${plg.name + plg.clientId}" name="option1" type="checkbox" value="${plg.enabled}" checked="${parseInt(plg.enabled, 10) === 1 ? true : false}"/>
-                <label for="${plg.name+plg.clientId}">${parseInt(plg.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
+                <label for="${plg.name+plg.clientId}">${parseInt(plg.enabled,10) === 1 ? 'Enabled ' : 'Disabled'}</label>
               </div>
               </td>
           </tr>
@@ -205,7 +205,7 @@ class RemoveFatElement extends HyperHTMLElement {
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${mod.name+mod.clientId}" name="option1" type="checkbox" value="${mod.enabled}" checked="${parseInt(mod.enabled, 10) === 1 ? true : false}"/>
-                <label for="${mod.name+mod.clientId}">${parseInt(mod.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
+                <label for="${mod.name+mod.clientId}">${parseInt(mod.enabled,10) === 1 ? 'Enabled ' : 'Disabled'}</label>
               </div>
           </td>
           </tr>
@@ -232,7 +232,7 @@ class RemoveFatElement extends HyperHTMLElement {
             <td class="column3">
               <div class="inputGroup">
                 <input tabindex="-1" id="${tmpl.name + tmpl.clientId}" name="option1" type="checkbox" value="${tmpl.enabled}" checked="${parseInt(tmpl.enabled,10) === 1 ? true : false}"/>
-                <label for="${tmpl.name+tmpl.clientId}">${parseInt(tmpl.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
+                <label for="${tmpl.name+tmpl.clientId}">${parseInt(tmpl.enabled,10) === 1 ? 'Enabled ' : 'Disabled'}</label>
               </div>
             </td>
           </tr>
