@@ -3,6 +3,6 @@
 
 - Clone the repo
 - `npm i`
-- `npm run build` or `node run build`
+- `npm run build` or `node build.js`
 - To serve locally run `npx http-server`
 
