@@ -248,15 +248,31 @@ class RemoveFatElement extends HyperHTMLElement {
     }
   }
 
-  RemoveFatElement.define('hide-joomla-junk');
+ RemoveFatElement.define('hide-joomla-junk');
 
-  fetch('js/json.json')
-  .then(function(response) {
-    return response.json();
-  })
-    .then(function (myJson) {
 
-      myJson.data.forEach(el => {
+const xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = () => {
+  // Request not finished
+  if (xhr.readyState !== 4) {
+    return;
+  }
+
+  // Request finished and response is ready
+  if (xhr.status === 200) {
+    let response;
+
+    try {
+      response = JSON.parse(xhr.responseText);
+    } catch (error) {
+      throw new Error('Failed to parse JSON')
+    }
+
+    if (!response) {
+      throw new Error('Ajax gone wrong')
+    } else {
+      response.data.forEach(el => {
         store[el.type].push({
           name: el.name,
           folder: el.folder,
@@ -264,7 +280,7 @@ class RemoveFatElement extends HyperHTMLElement {
           enabled: el.enabled,
         })
       });
-
+  
       store.component = store.component.sort(compare)
       store.plugin = store.plugin.sort(compare)
       store.module = store.module.sort(compare)
@@ -273,7 +289,14 @@ class RemoveFatElement extends HyperHTMLElement {
       // store.language = store.language.sort(compare)
       // store.file = store.file.sort(compare)
       // store.package = store.package.sort(compare)
+  
+      const El = new RemoveFatElement(response)
+      document.body.appendChild(El)
+    }
+  } else {
+    throw new Error('Failed to parse JSON')
+  }
+};
 
-    const El = new RemoveFatElement(myJson)
-    document.body.appendChild(El)
-  });
+xhr.open('GET', 'js/json.json');
+xhr.send();

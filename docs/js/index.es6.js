@@ -103,4 +103,4 @@
       <div>
       ${ue}
       </div>
-        `}}le.define("hide-joomla-junk"),fetch("js/json.json").then(function(t){return t.json()}).then(function(t){t.data.forEach(t=>{ie[t.type].push({name:t.name,folder:t.folder,clientId:t.client_id,enabled:t.enabled})}),ie.component=ie.component.sort(oe),ie.plugin=ie.plugin.sort(oe),ie.module=ie.module.sort(oe),ie.library=ie.library.sort(oe),ie.template=ie.template.sort(oe);const e=new le(t);document.body.appendChild(e)})}]);
+        `}}le.define("hide-joomla-junk");const he=new XMLHttpRequest;he.onreadystatechange=(()=>{if(4===he.readyState){if(200!==he.status)throw new Error("Failed to parse JSON");{let t;try{t=JSON.parse(he.responseText)}catch(t){throw new Error("Failed to parse JSON")}if(!t)throw new Error("Ajax gone wrong");{t.data.forEach(t=>{ie[t.type].push({name:t.name,folder:t.folder,clientId:t.client_id,enabled:t.enabled})}),ie.component=ie.component.sort(oe),ie.plugin=ie.plugin.sort(oe),ie.module=ie.module.sort(oe),ie.library=ie.library.sort(oe),ie.template=ie.template.sort(oe);const e=new le(t);document.body.appendChild(e)}}}}),he.open("GET","js/json.json"),he.send()}]);
