@@ -9,7 +9,7 @@
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
   "dependencies": {
-    "file-saver": "^2.0.1",
+    "file-saver": "^2.0.2",
     "hyperhtml-element": "^3.6.0",
     "jszip": "^3.1.5"
   },
