@@ -1,0 +1,23 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "dgrammatiko",
+      "name": "dGrammatiko",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3889375?v=4",
+      "profile": "https://dgrammatiko.online",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "on-a-diet",
+  "projectOwner": "dgrammatiko",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
