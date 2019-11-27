@@ -20,7 +20,7 @@
     "compression-webpack-plugin": "3.0.0",
     "copy-webpack-plugin": "5.0.5",
     "fs": "0.0.2",
-    "http-server": "0.11.1",
+    "http-server": "0.12.0",
     "path": "0.12.7",
     "terser-webpack-plugin": "2.2.1",
     "webpack": "4.41.2"
