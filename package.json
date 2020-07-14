@@ -14,7 +14,7 @@
     "jszip": "^3.1.5"
   },
   "devDependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "babel-loader": "8.1.0",
     "compression-webpack-plugin": "4.0.0",
