@@ -23,6 +23,6 @@
     "http-server": "0.12.3",
     "path": "0.12.7",
     "terser-webpack-plugin": "5.1.1",
-    "webpack": "5.14.0"
+    "webpack": "5.15.0"
   }
 }
