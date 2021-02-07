@@ -41,15 +41,6 @@ const resetStore = (elClass, data) => {
   elClass.store.template = elClass.store.template.sort(compare)
 }
 
-// const transform = (el, data, files) => {
-//   if (el === 'script.php') {
-//     files[el] = data[el].replace('/**{{replacement}}**/', makeDastscript(data[el]));
-//     return;
-//   }
-
-//   files[el] = data[el];
-// }
-
 const addFile = async(fileName, contents, elClass, BlobReader) => {
   const theBlob = new Blob([contents], { type: "text/plain" });
   await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
@@ -68,12 +59,11 @@ const generateZip = async(elClass) => {
   let blobURL;
   const queue = [];
   const files = {};
-  const data = elClass.data.files;//[`v${elClass.jVersion}`]
-  console.log(elClass.data.files)
+  const data = elClass.data.files;// @todo add different versions [`v${elClass.jVersion}`]
   Object.keys(data).map(el => files[el] = data[el]);
   const replacement = makeDastscript(elClass.store)
   files['script.php'] = elClass.data.files['script.php'].replace('/**{{replacement}}**/', replacement);
-  console.log(files)
+
   Object.keys(files).map(el => queue.push(addFile(`${el}`, files[el], elClass, BlobReader)));
   await Promise.all(queue);
   const zipReader = new ZipReader(new BlobReader(await elClass.ZipWriter.close()));
@@ -99,7 +89,8 @@ const makeDastscript = (data) => {
   ['component', 'plugin', 'module', 'template'].forEach(type => {
     // data =this.store
     data[type].forEach(el => {
-      txt += `'${el.name}' => array(`;
+      txt += `
+      '${el.name}' => array(`;
 
       if (type === 'component') {
         txt +=`'type' => 'component',`
@@ -107,8 +98,11 @@ const makeDastscript = (data) => {
       if (type === 'module') {
         txt +=`'type' => 'module', 'client_id' => ${parseInt(el.clientId, 10)},`
       }
-      if (type === 'module') {
+      if (type === 'plugin') {
         txt +=`'type' => 'plugin', 'folder' => '${el.folder}'`;
+      }
+      if (type === 'template') {
+        txt +=`'type' => '"template"', 'client_id' => ${parseInt(el.clientId, 10)},`;
       }
 
       txt +=`'enabled' => ${el.enabled}`
@@ -116,8 +110,9 @@ const makeDastscript = (data) => {
     });
   });
 
-  txt += `);`;
-  console.log(txt)
+  txt += `
+  );`;
+
   return txt;
 }
 
