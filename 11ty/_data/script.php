@@ -1,7 +1,7 @@
-const dataScript = `<?php
+<?php
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\\CMS\\Factory;
+use Joomla\CMS\Factory;
 
 class plgSystemRemovefatInstallerScript {
   public function __construct(JAdapterInstance $adapter) {
@@ -37,7 +37,10 @@ class plgSystemRemovefatInstallerScript {
       }
 
       $db->setQuery($query);
-      try { $db->execute(); } catch (\\Exception $e) { }
+
+      try {
+        $db->execute();
+      } catch (\Exception $e) { }
     }
   }
   public function postflight($type, $parent) {
@@ -54,7 +57,7 @@ class plgSystemRemovefatInstallerScript {
 
       try {
         $db->execute();
-      } catch (\\Exception $e) { }
+      } catch (\Exception $e) { }
 
       if (is_dir(JPATH_ROOT . '/plugins/system/removefat')) {
         if (is_file(JPATH_ROOT . '/plugins/system/removefat/removefat.php')) {
@@ -71,20 +74,3 @@ class plgSystemRemovefatInstallerScript {
     }
   }
 }
-`;const dataMain = `<?php defined('_JEXEC') or die; class PlgSystemRemovefat extends JPlugin {}`;const dataXML = `<?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="plugin" group="system" method="upgrade">
-  <name>Remove FAT</name>
-  <author>Dimitrios Grammatikogiannis</author>
-  <creationDate>2019</creationDate>
-  <copyright>Copyright (C) 2019 Dimitrios Grammatikogiannis. All rights reserved.</copyright>
-  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-  <authorEmail>d.grammatiko@gmail.com</authorEmail>
-  <authorUrl>https://dgrammatiko.online</authorUrl>
-  <version>0.0.1</version>
-  <description>Automagically disables what needs to be disabled</description>
-  <scriptfile>script.php</scriptfile>
-  <files>
-    <filename plugin="removefat">removefat.php</filename>
-  </files>
-</extension>
-`;export { dataScript, dataMain, dataXML };

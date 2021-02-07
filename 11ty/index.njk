@@ -1,0 +1,29 @@
+<!-- By D. Grammatikogiannis-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {# <base href="https://dgrammatiko.github.io/on-a-diet/"> #}
+  <link rel="prelod" href="css/opensans-light-webfont.woff2" as="font/woff2">
+  <link rel="modulepreload" href="js/index.esm.js">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Description" content="Remove all the greasy, pure fat stuff from Joomla">
+  <title>Hide and hopefuly less seek</title>
+  <style>{{ getCss.css | safe}}</style>
+  <script type="module" src="js/index.esm.js"></script>
+</head>
+
+<body>
+  <create-joomla-fat-free-plugin style="display: block; min-height: 600px;">
+    <noscript>
+      <h1>No Javascript? No Joy for you then...</h1>
+    </noscript>
+    <p>This is a client side app that will create a plugin to automatically disable useless Joomla extensions</p>
+    <p>Source @<a href="https://github.com/dgrammatiko/com_frontpage" target="_blank" rel="noopener nofollow">Github</a></p>
+    <script id="data" type="application/json">{{ data | dump | safe}}</script>
+    <script id="db" type="application/json">{{ db | dump | safe}}</script>
+  </create-joomla-fat-free-plugin>
+</body>
+
+</html>
