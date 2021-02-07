@@ -1,55 +1,124 @@
-const reservedNames = [
-  'empty',
-  'ajax',
-  'banners',
-  'config',
-  'contact',
-  'content',
-  'contenthistory',
-  'fields',
-  'finder',
-  'mailto',
-  'media',
-  'menus',
-  'modules',
-  'newsfeeds',
-  'privacy',
-  'search',
-  'tags',
-  'users',
-  'wrapper'
-];
+const compare = (a, b) => {
+  // Ignore character casing
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
 
-const escapeRegExp = (str) => {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+  let comparison = 0;
+  if (nameA > nameB) {
+    comparison = 1;
+  } else if (nameA < nameB) {
+    comparison = -1;
+  }
+  return comparison;
 }
 
-const replaceAll = (str, find, replace) => {
-  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
+const resetStore = (elClass, data) => {
+  // Hard reset
+  elClass.store = {
+    component: [],
+    plugin: [],
+    module: [],
+    template: [],
+  };
 
-const alpha_numeric_filter = (string) => {
-  const alpha_numeric = Array.from('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-  const json_string = JSON.stringify(string)
-  let filterd_string = ''
-
-  for (let i = 0; i < json_string.length; i++) {
-    let char = json_string[i]
-    let index = alpha_numeric.indexOf(char)
-    if (index > -1) {
-      filterd_string += alpha_numeric[index]
+  data['j4'].forEach(el => {
+    if (el.locked && el.locked === 1) {
+      return;
     }
-  }
+    if (el.protected === 0) {
+      elClass.store[el.type].push({
+        name: el.name,
+        folder: el.folder,
+        clientId: el.client_id,
+        enabled: el.enabled,
+      })
+    }
+  });
 
-  return filterd_string
-};
-
-const removeFirstNum = (str) => {
-  while ([1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(parseInt(str.charAt(0))) > -1 || '0' === str.charAt(0)) {
-    str = str.substr(1);
-  }
-
-  return str;
+  elClass.store.component = elClass.store.component.sort(compare)
+  elClass.store.plugin = elClass.store.plugin.sort(compare)
+  elClass.store.module = elClass.store.module.sort(compare)
+  elClass.store.template = elClass.store.template.sort(compare)
 }
 
-export {removeFirstNum, alpha_numeric_filter, replaceAll, reservedNames };
+// const transform = (el, data, files) => {
+//   if (el === 'script.php') {
+//     files[el] = data[el].replace('/**{{replacement}}**/', makeDastscript(data[el]));
+//     return;
+//   }
+
+//   files[el] = data[el];
+// }
+
+const addFile = async(fileName, contents, elClass, BlobReader) => {
+  const theBlob = new Blob([contents], { type: "text/plain" });
+  await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
+}
+
+const generateZip = async(elClass) => {
+  const {configure, BlobReader, BlobWriter, ZipReader, ZipWriter} = await import('@zip.js/zip.js/lib/zip.js');
+
+  configure({
+    workerScriptsPath: '/js/',
+  });
+
+  console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
+  elClass.writer = new BlobWriter("application/zip");
+  elClass.ZipWriter = new ZipWriter(elClass.writer);
+  let blobURL;
+  const queue = [];
+  const files = {};
+  const data = elClass.data.files;//[`v${elClass.jVersion}`]
+  console.log(elClass.data.files)
+  Object.keys(data).map(el => files[el] = data[el]);
+  const replacement = makeDastscript(elClass.store)
+  files['script.php'] = elClass.data.files['script.php'].replace('/**{{replacement}}**/', replacement);
+  console.log(files)
+  Object.keys(files).map(el => queue.push(addFile(`${el}`, files[el], elClass, BlobReader)));
+  await Promise.all(queue);
+  const zipReader = new ZipReader(new BlobReader(await elClass.ZipWriter.close()));
+
+  try {
+    await zipReader.close();
+    blobURL = URL.createObjectURL(await elClass.writer.getData());
+    elClass.ZipWriter = null;
+    let a = document.createElement('a');
+    a.href = blobURL;
+    a.download = `com_remove_joomla_fat.zip`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (error) {
+    alert(error);
+  }
+}
+
+const makeDastscript = (data) => {
+  let txt = `$useless = array(`;
+
+  ['component', 'plugin', 'module', 'template'].forEach(type => {
+    // data =this.store
+    data[type].forEach(el => {
+      txt += `'${el.name}' => array(`;
+
+      if (type === 'component') {
+        txt +=`'type' => 'component',`
+      }
+      if (type === 'module') {
+        txt +=`'type' => 'module', 'client_id' => ${parseInt(el.clientId, 10)},`
+      }
+      if (type === 'module') {
+        txt +=`'type' => 'plugin', 'folder' => '${el.folder}'`;
+      }
+
+      txt +=`'enabled' => ${el.enabled}`
+      txt +=`),`
+    });
+  });
+
+  txt += `);`;
+  console.log(txt)
+  return txt;
+}
+
+export { resetStore, generateZip };
