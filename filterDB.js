@@ -36,5 +36,5 @@ const newData = {
   j4: dataJ4,
 };
 
-await writeFile('src/db.json', JSON.stringify(newData, '', 2), {encoding: 'utf8'});
+await writeFile('db.json', JSON.stringify(newData, '', 2), {encoding: 'utf8'});
 })();
