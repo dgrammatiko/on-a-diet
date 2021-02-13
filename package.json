@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "0.11.1",
-    "esbuild": "0.8.44",
+    "esbuild": "0.8.45",
     "rimraf": "3.0.2"
   }
 }
