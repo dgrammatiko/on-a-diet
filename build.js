@@ -4,14 +4,16 @@ const esbuild = require('esbuild');
 (async () => {
   esbuild.build({
     entryPoints: ['src/assets/js/index.js'],
+    // bundle: true,
+    // minify: true,
+    // outfile: '11ty/js/index.esm.js',
+    // platform: 'browser',
+
+    chunkNames: 'chunks/[name]-[hash]',
     bundle: true,
-    minify: true,
-    outfile: '11ty/js/index.esm.js',
-    platform: 'browser',
-    // target: [
-    //     'es5',
-    // ],
-    // plugins: [envPlugin],
+    outdir: '11ty/js',
+    splitting: true,
+    format: 'esm',
   }).catch(() => process.exit(1));
 
   // Copy some pre bundled files
