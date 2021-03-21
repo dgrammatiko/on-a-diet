@@ -53,7 +53,7 @@ const generateZip = async(elClass) => {
     workerScriptsPath: '/js/',
   });
 
-  console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
+  // console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
   elClass.writer = new BlobWriter("application/zip");
   elClass.ZipWriter = new ZipWriter(elClass.writer);
   let blobURL;

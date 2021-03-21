@@ -43,7 +43,7 @@ class ComponentCreator extends HTMLElement {
 
     resetStore(this, this.data.data, `j${this.jVersion}`);
     this.renderEl();
-    console.log(this.data.data[`j${this.jVersion}`])
+    // console.log(this.data.data[`j${this.jVersion}`])
   }
 
   renderEl() {
@@ -110,7 +110,7 @@ class ComponentCreator extends HTMLElement {
     this.jVersion = parseInt(sel.options[sel.selectedIndex].value, 10);
 
     resetStore(this, this.data.data, `j${this.jVersion}`);
-    console.log(this.data.data[`j${this.jVersion}`])
+    // console.log(this.data.data[`j${this.jVersion}`])
     this.renderEl();
   }
 
