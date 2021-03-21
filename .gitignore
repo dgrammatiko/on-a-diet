@@ -2,4 +2,4 @@ node_modules
 .DS_Store
 src/assets/js/data.js
 # 11ty/css
-11ty/js
+# 11ty/js
