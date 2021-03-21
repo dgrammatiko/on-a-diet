@@ -6,7 +6,7 @@
   "scripts": {
     "docs": "eleventy --pathprefix=\"/\"",
     "11ty": "eleventy --serve",
-    "build": "node build.js"
+    "build": "node build.js && eleventy --pathprefix=\"/\""
   },
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
@@ -17,7 +17,11 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "0.12.1",
-    "esbuild": "0.9.6",
-    "rimraf": "3.0.2"
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "rimraf": "3.0.2",
+    "rollup": "^2.42.1",
+    "rollup-plugin-html-literals": "^1.1.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.6.1"
   }
 }
