@@ -53,12 +53,12 @@ class ComponentCreator extends HTMLElement {
         <details>
           <summary class="h1">Online Joomla's fat-remover plugin creator</summary>
           <div>
-            <p>A simple (client side exclusive) plugin generator. The plugin upon installation will disable (hide) all the extension you have disabled in the given list.
-            The plugin will unistall itself after that. There is no unistalling of any extension, just disabling them.</p>
+            <p>A simple (client side exclusive) plugin generator. The plugin upon installation will disable (hide) all the extensions you have disabled in the given list.
+            The plugin will uninstall itself after that. No extension is uninstalled they are just disabled.</p>
             </div>
         </details>
         <hr/>
-        <label> Select you Joomla version
+        <label> Select your Joomla version
           <select value=${this.jVersion} oninput=${this.onSelectChange}>
             ${[4, 3].map(ver => html`<option value="${ver}" .selected="${this.jVersion === ver}">Version ${ver}.x</option>`)}
           </select>
