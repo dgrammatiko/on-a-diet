@@ -28,7 +28,7 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
 
-    - uses: stefanzweifel/git-auto-commit-action@v4.11.0
+    - uses: stefanzweifel/git-auto-commit-action@v4.14.1
       with:
         commit_message: Adding back the json created...
         branch: ${{ github.head_ref }}
