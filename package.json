@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "1.0.2",
-    "@rollup/plugin-node-resolve": "15.0.0",
+    "@rollup/plugin-node-resolve": "15.0.1",
     "rimraf": "3.0.2",
     "rollup": "3.2.0",
     "rollup-plugin-html-literals": "1.1.5",
