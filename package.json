@@ -4,6 +4,7 @@
   "description": "remove Joomla's fat",
   "main": "index.js",
   "scripts": {
+    "test": "eleventy --pathprefix=\"/\"",
     "docs": "eleventy --pathprefix=\"/\"",
     "11ty": "eleventy --serve",
     "build": "node build.js && eleventy --pathprefix=\"/\""
@@ -17,7 +18,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "2.0.1",
-    "@rollup/plugin-node-resolve": "15.0.1",
+    "@rollup/plugin-node-resolve": "15.0.2",
     "rimraf": "4.4.1",
     "rollup": "3.20.2",
     "rollup-plugin-html-literals": "1.1.6",
