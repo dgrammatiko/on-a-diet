@@ -30,7 +30,7 @@ const { minify } = require('terser');
 const rimraf = require('rimraf');
 const rollup = require('rollup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const { terser } = require("rollup-plugin-terser");
+const terser = require("@rollup/plugin-terser");
 const template = require("rollup-plugin-html-literals");
 // const replace = require('@rollup/plugin-replace');
 
