@@ -22,6 +22,6 @@
     "rimraf": "5.0.1",
     "rollup": "3.27.1",
     "rollup-plugin-html-literals": "1.1.6",
-    "rollup-plugin-terser": "7.0.2"
+    "@rollup/plugin-terser": "0.4.3"
   }
 }
