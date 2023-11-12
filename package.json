@@ -14,7 +14,7 @@
   "dependencies": {
     "@zip.js/zip.js": "^2.2.12",
     "naf-css": "^3.0.0",
-    "uhtml": "^3.0.0"
+    "uhtml": "^4.0.0"
   },
   "devDependencies": {
     "@11ty/eleventy": "2.0.1",
