@@ -16,15 +16,3 @@
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdgrammatiko%2Fon-a-diet.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdgrammatiko%2Fon-a-diet?ref=badge_large)
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<table>
-  <tr>
-    <td align="center"><a href="https://dgrammatiko.online"><img src="https://avatars0.githubusercontent.com/u/3889375?v=4" width="100px;" alt="dGrammatiko"/><br /><sub><b>dGrammatiko</b></sub></a><br /><a href="https://github.com/dgrammatiko/on-a-diet/commits?author=dgrammatiko" title="Code">💻</a></td>
-    <td align="center"><a href="https://joomjunk.co.uk"><img src="https://avatars1.githubusercontent.com/u/2019801?v=4" width="100px;" alt="Lodder"/><br /><sub><b>Lodder</b></sub></a><br /><a href="https://github.com/dgrammatiko/on-a-diet/commits?author=C-Lodder" title="Code">💻</a></td>
-  </tr>
-</table>
