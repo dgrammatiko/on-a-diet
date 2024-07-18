@@ -28,7 +28,3 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://joomjunk.co.uk"><img src="https://avatars1.githubusercontent.com/u/2019801?v=4" width="100px;" alt="Lodder"/><br /><sub><b>Lodder</b></sub></a><br /><a href="https://github.com/dgrammatiko/on-a-diet/commits?author=C-Lodder" title="Code">💻</a></td>
   </tr>
 </table>
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
