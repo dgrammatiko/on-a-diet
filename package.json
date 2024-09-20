@@ -20,7 +20,7 @@
     "@11ty/eleventy": "2.0.1",
     "@rollup/plugin-node-resolve": "15.2.3",
     "rimraf": "6.0.1",
-    "rollup": "4.22.0",
+    "rollup": "4.22.2",
     "rollup-plugin-html-literals": "1.1.8",
     "@rollup/plugin-terser": "0.4.4"
   }
