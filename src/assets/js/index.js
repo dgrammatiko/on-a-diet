@@ -41,8 +41,8 @@ class ComponentCreator extends HTMLElement {
 
   renderEl() {
     render(
-      this,
-      html`<div>
+					this,
+					html`<div>
             <p>A simple (client side exclusive) plugin generator. The plugin upon installation will disable (hide) all the extensions you have disabled in the given list.
             The plugin will uninstall itself after that. No extension is uninstalled they are just disabled.</p>
         <hr/>
@@ -50,7 +50,8 @@ class ComponentCreator extends HTMLElement {
 
       <hr/>
 
-      ${['component', 'plugin', 'module', 'template'].map(type => html`
+      ${['component', 'plugin', 'module', 'template'].map(
+				(type) => html`
       <details>
         <summary class="h1">List of Joomla's ${type}s:</summary>
         <table class="rwd-table">
@@ -63,26 +64,26 @@ class ComponentCreator extends HTMLElement {
           </thead>
           <tbody>
           ${this.store[type].map(
-            (com, index) => html`
-              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${Number.parseInt(com.enabled,10) === 1 ? 0 : 1}">
+						(com, index) => html`
+              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${Number.parseInt(com.enabled, 10) === 1 ? 0 : 1}">
                 <td class="column1"><strong>${com.name.toLowerCase()}</strong></td>
                 ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${Number.parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
                 <td class="column2">
                   <div class="inputGroup">
-                    <input tabindex="-1" id="${com.name+com.clientId}" name="option1" type="checkbox" value="${Number.parseInt(com.enabled,10)}" checked="${Number.parseInt(com.enabled,10) === 1 ? true : null}"/>
-                    <label for="${com.name+com.clientId}">${Number.parseInt(com.enabled, 10) === 1 ? 'Enabled' : 'Disabled'}</label>
-                    <input tabindex="-1" id="${com.name+com.clientId}" type="checkbox" .value=${parseInt(com.enabled,10)} .checked=${() => parseInt(com.enabled,10) === 1 ? true : false} />
-                    <label for="${com.name+com.clientId}">${parseInt(com.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
+                    <input tabindex="-1" id="${com.name + com.clientId}" name="option1" type="checkbox" value="${Number.parseInt(com.enabled, 10)}" ?checked=${Number.parseInt(com.enabled, 10) === 1} />
+                    <label for="${com.name + com.clientId}">${Number.parseInt(com.enabled, 10) === 1 ? 'Enabled' : 'Disabled'}</label>
                   </div>
                 </td>
-              </tr>`
-          )}
+              </tr>`,
+					)}
           </tbody>
         </table>
-      </details>`)}
+      </details>`,
+			)}
 
       <hr/>
-      <button onclick="${this.onCreate}">Computer, build me the plugin...</button>`)
+      <button onclick="${this.onCreate}">Computer, build me the plugin...</button>`,
+				);
   }
 
   updState(type, prop, value, index) {
@@ -121,6 +122,7 @@ class ComponentCreator extends HTMLElement {
 
     const dataElement = document.getElementById('data');
     const dbElement = document.getElementById('db');
+    let files, ext;
 
     console.log({
       files: dataElement.innerText,
@@ -155,7 +157,7 @@ class ComponentCreator extends HTMLElement {
       module: [],
       template: [],
     };
-    for (const el of data.ext) {
+    for (const el of data.data) {
       if (el.locked && el.locked === 1) {
         return;
       }
