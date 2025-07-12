@@ -85,7 +85,7 @@ class ComponentCreator extends HTMLElement {
                 ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
                 <td class="column2">
                   <div class="inputGroup">
-                    <input tabindex="-1" id="${com.name+com.clientId}" name="option1" type="checkbox" .value=${parseInt(com.enabled,10)} .checked=${() => parseInt(com.enabled,10) === 1 ? true : false} />
+                    <input tabindex="-1" id="${com.name+com.clientId}" type="checkbox" .value=${parseInt(com.enabled,10)} .checked=${() => parseInt(com.enabled,10) === 1 ? true : false} />
                     <label for="${com.name+com.clientId}">${parseInt(com.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
                   </div>
                 </td>
