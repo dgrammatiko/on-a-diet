@@ -8,7 +8,7 @@
     "test": "eleventy",
     "docs": "eleventy",
     "11ty": "eleventy --serve",
-    "build": "node build.js && eleventy --serve"
+    "build": "node build.js && eleventy"
   },
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
