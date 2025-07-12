@@ -83,7 +83,7 @@ class ComponentCreator extends HTMLElement {
 
       <hr/>
       <button onclick="${this.onCreate}">Computer, build me the plugin...</button>`,
-				);
+  );
   }
 
   updState(type, prop, value, index) {
@@ -122,7 +122,6 @@ class ComponentCreator extends HTMLElement {
 
     const dataElement = document.getElementById('data');
     const dbElement = document.getElementById('db');
-    let files, ext;
 
     console.log({
       files: dataElement.innerText,
@@ -132,23 +131,23 @@ class ComponentCreator extends HTMLElement {
       throw new Error("Data is missing...");
     }
     try {
-      files = JSON.parse(dataElement.innerText);
+      this.files = JSON.parse(dataElement.innerText);
     } catch (err) {
       throw new Error('Malformed Files JSON...')
     }
     try {
-      ext = JSON.parse(dbElement.innerText);
+      this.ext = JSON.parse(dbElement.innerText);
     } catch (err) {
       throw new Error('Malformed DB JSON...')
     }
 
-    if (!files || !ext) {
+    if (!this.files || !this.ext) {
       throw new Error('Data is missing...')
     }
 
-    const data = {
-      files: files.files,
-      data: ext,
+    this.data = {
+      files: this.files.files,
+      data: this.ext,
     };
 
     const tempStore = {
@@ -157,7 +156,7 @@ class ComponentCreator extends HTMLElement {
       module: [],
       template: [],
     };
-    for (const el of data.data) {
+    for (const el of this.data.data) {
       if (el.locked && el.locked === 1) {
         return;
       }

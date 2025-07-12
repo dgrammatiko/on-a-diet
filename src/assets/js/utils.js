@@ -1,10 +1,10 @@
 const generateZip = async(scoped) => {
   const addFile = async (fileName, contents, BlobReader) => {
     const theBlob = new Blob([contents], { type: "text/plain" });
-    await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
+    await scoped.ZipWriter.add(fileName, new BlobReader(theBlob));
   };
 
-  const {configure, BlobReader, BlobWriter, ZipReader, ZipWriter} = await import('@zip.js/zip.js/lib/zip.js');
+  const {configure, BlobReader, BlobWriter, ZipReader, ZipWriter} = await import('@zip.js/zip.js');
 
   configure({
     workerScriptsPath: '/js/',
