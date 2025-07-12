@@ -13,7 +13,7 @@
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
   "dependencies": {
-    "@zip.js/zip.js": "^2.7.46",
+    "@zip.js/zip.js": "^2.7.63",
     "naf-css": "^3.0.3",
     "uhtml": "^4.7.1"
   },

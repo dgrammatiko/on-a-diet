@@ -1,76 +1,127 @@
-const generateZip = async(scoped) => {
-  const addFile = async (fileName, contents, BlobReader) => {
-    const theBlob = new Blob([contents], { type: "text/plain" });
-    await scoped.ZipWriter.add(fileName, new BlobReader(theBlob));
-  };
+const compare = (a, b) => {
+	// Ignore character casing
+	const nameA = a.name.toUpperCase();
+	const nameB = b.name.toUpperCase();
 
-  const {configure, BlobReader, BlobWriter, ZipReader, ZipWriter} = await import('@zip.js/zip.js');
+	let comparison = 0;
+	if (nameA > nameB) {
+		comparison = 1;
+	} else if (nameA < nameB) {
+		comparison = -1;
+	}
+	return comparison;
+};
 
-  configure({
-    workerScriptsPath: '/js/',
-  });
+const resetStore = (elClass, data) => {
+	// Hard reset
+	elClass.store = {
+		component: [],
+		plugin: [],
+		module: [],
+		template: [],
+	};
 
-  // console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
-  scoped.writer = new BlobWriter("application/zip");
-  scoped.ZipWriter = new ZipWriter(scoped.writer);
-  let blobURL;
-  const queue = [];
-  const files = {};
-  const data = scoped.data.files;// @todo add different versions [`v${scoped.jVersion}`]
-  Object.keys(data).map((el) => {
-    files[el] = data[el];
-  });
-  const replacement = makeDastscript(scoped.store)
-  files['script.php'] = scoped.data.files['script.php'].replace('/**{{replacement}}**/', replacement);
+	data['j4'].forEach((el) => {
+		if (el.locked && el.locked === 1) {
+			return;
+		}
+		if (el.protected === 0) {
+			elClass.store[el.type].push({
+				name: el.name,
+				folder: el.folder,
+				clientId: el.client_id,
+				enabled: el.enabled,
+			});
+		}
+	});
 
-  Object.keys(files).map(el => queue.push(addFile(`${el}`, files[el], scoped, BlobReader)));
-  await Promise.all(queue);
-  const zipReader = new ZipReader(new BlobReader(await scoped.ZipWriter.close()));
+	elClass.store.component = elClass.store.component.sort(compare);
+	elClass.store.plugin = elClass.store.plugin.sort(compare);
+	elClass.store.module = elClass.store.module.sort(compare);
+	elClass.store.template = elClass.store.template.sort(compare);
+};
 
-  try {
-    await zipReader.close();
-    blobURL = URL.createObjectURL(await scoped.writer.getData());
-    scoped.ZipWriter = null;
-    const a = document.createElement('a');
-    a.href = blobURL;
-    a.download = 'remove_joomla_fat.zip';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  } catch (error) {
-    alert(error);
-  }
-}
+const addFile = async (fileName, contents, elClass, BlobReader) => {
+	const theBlob = new Blob([contents], { type: 'text/plain' });
+	await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
+};
+
+const generateZip = async (elClass) => {
+	const { configure, BlobReader, BlobWriter, ZipReader, ZipWriter } =
+		await import('@zip.js/zip.js/lib/zip.js');
+
+	configure({
+		workerScriptsPath: '/js/',
+	});
+
+	// console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
+	elClass.writer = new BlobWriter('application/zip');
+	elClass.ZipWriter = new ZipWriter(elClass.writer);
+	let blobURL;
+	const queue = [];
+	const files = {};
+	const data = elClass.data.files; // @todo add different versions [`v${elClass.jVersion}`]
+	Object.keys(data).map((el) => (files[el] = data[el]));
+	const replacement = makeDastscript(elClass.store);
+	files['script.php'] = elClass.data.files['script.php'].replace(
+		'/**{{replacement}}**/',
+		replacement,
+	);
+
+	Object.keys(files).map((el) =>
+		queue.push(addFile(`${el}`, files[el], elClass, BlobReader)),
+	);
+	await Promise.all(queue);
+	const zipReader = new ZipReader(
+		new BlobReader(await elClass.ZipWriter.close()),
+	);
+
+	try {
+		await zipReader.close();
+		blobURL = URL.createObjectURL(await elClass.writer.getData());
+		elClass.ZipWriter = null;
+		let a = document.createElement('a');
+		a.href = blobURL;
+		a.download = `com_remove_joomla_fat.zip`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	} catch (error) {
+		alert(error);
+	}
+};
 
 const makeDastscript = (data) => {
-  let txt = `        private $useless = [`;
+	let txt = `$useless = array(`;
 
-  for (const type of ['component', 'plugin', 'module', 'template']) {
-    for (const el of data[type]) {
-      txt += `
-      '${el.name}' => [`;
-      if (type === 'component') {
-        txt +=`'type' => 'component',`
-      }
-      if (type === 'module') {
-        txt +=`'type' => 'module', 'client_id' => ${Number.parseInt(el.clientId, 10)},`
-      }
-      if (type === 'plugin') {
-        txt +=`'type' => 'plugin', 'folder' => '${el.folder}'`;
-      }
-      if (type === 'template') {
-        txt +=`'type' => '"template"', 'client_id' => ${Number.parseInt(el.clientId, 10)},`;
-      }
+	['component', 'plugin', 'module', 'template'].forEach((type) => {
+		// data =this.store
+		data[type].forEach((el) => {
+			txt += `
+      '${el.name}' => array(`;
 
-      txt +=`'enabled' => ${el.enabled}`
-      txt +=`],`;
-    }
-  }
+			if (type === 'component') {
+				txt += `'type' => 'component',`;
+			}
+			if (type === 'module') {
+				txt += `'type' => 'module', 'client_id' => ${parseInt(el.clientId, 10)},`;
+			}
+			if (type === 'plugin') {
+				txt += `'type' => 'plugin', 'folder' => '${el.folder}'`;
+			}
+			if (type === 'template') {
+				txt += `'type' => '"template"', 'client_id' => ${parseInt(el.clientId, 10)},`;
+			}
 
-  txt += `
-  ];`;
+			txt += `'enabled' => ${el.enabled}`;
+			txt += `),`;
+		});
+	});
 
-  return txt;
-}
+	txt += `
+  );`;
 
-export { generateZip };
+	return txt;
+};
+
+export { resetStore, generateZip };

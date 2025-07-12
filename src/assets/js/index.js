@@ -1,51 +1,67 @@
-import {render, html} from 'uhtml';
-import { generateZip } from './utils.js';
-
-const compare = (a, b) => {
-  // Ignore character casing
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-
-  let comparison = 0;
-  if (nameA > nameB) {
-    comparison = 1;
-  } else if (nameA < nameB) {
-    comparison = -1;
-  }
-  return comparison;
-}
+import { render, html } from 'uhtml';
+import { resetStore, generateZip } from './utils.js';
 
 class ComponentCreator extends HTMLElement {
-  constructor() {
-    super()
+	constructor() {
+		super();
 
-    this._store = {};
-    this.renderEl = this.renderEl.bind(this);
-    this.updState = this.updState.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onCreate = this.onCreate.bind(this);
-    this.reset = this.reset.bind(this);
-    this.reset(this);
-  }
+		this.jVersion = 4;
+		this.store = {};
+		this.renderEl = this.renderEl.bind(this);
+		this.updState = this.updState.bind(this);
+		this.onClick = this.onClick.bind(this);
+		this.onCreate = this.onCreate.bind(this);
+		this.onSelectChange = this.onSelectChange.bind(this);
+	}
 
-  set store(val) {
-    this._store = val;
-  }
-  get store() {
-    return this._store;
-  }
+	connectedCallback() {
+		let files, data;
+		const jsonEl = document.getElementById('data');
+		const jsonEll = document.getElementById('db');
+		if (!jsonEl || !jsonEll) {
+			throw new Error('Data is missing...');
+		}
+		try {
+			files = JSON.parse(jsonEl.innerText);
+		} catch (err) {
+			throw new Error('Malformed JSON...');
+		}
+		try {
+			data = JSON.parse(jsonEll.innerText);
+		} catch (err) {
+			throw new Error('Malformed JSON...');
+		}
 
-  connectedCallback() {
-    this.renderEl();
-  }
+		if (!files || !data) {
+			throw new Error('Data is missing...');
+		}
 
-  renderEl() {
-    render(
-					this,
-					html`<div>
+		this.data = {
+			files: files.files,
+			data: data,
+		};
+
+		resetStore(this, this.data.data, `j${this.jVersion}`);
+		this.renderEl();
+		// console.log(this.data.data[`j${this.jVersion}`])
+	}
+
+	renderEl() {
+		render(
+			this,
+			html`<div>
+        <details>
+          <summary class="h1">Online Joomla's fat-remover plugin creator</summary>
+          <div>
             <p>A simple (client side exclusive) plugin generator. The plugin upon installation will disable (hide) all the extensions you have disabled in the given list.
             The plugin will uninstall itself after that. No extension is uninstalled they are just disabled.</p>
+            </div>
+        </details>
         <hr/>
+        <label> Select your Joomla version
+          <select value=${this.jVersion} oninput=${this.onSelectChange}>
+            ${[4, 3].map((ver) => html`<option value="${ver}" .selected="${this.jVersion === ver}">Version ${ver}.x</option>`)}
+          </select>
       </div>
 
       <hr/>
@@ -65,12 +81,12 @@ class ComponentCreator extends HTMLElement {
           <tbody>
           ${this.store[type].map(
 						(com, index) => html`
-              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${Number.parseInt(com.enabled, 10) === 1 ? 0 : 1}">
+              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${parseInt(com.enabled, 10) === 1 ? 0 : 1}">
                 <td class="column1"><strong>${com.name.toLowerCase()}</strong></td>
-                ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${Number.parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
+                ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
                 <td class="column2">
                   <div class="inputGroup">
-                    <input tabindex="-1" id="${com.name + com.clientId}" name="option1" type="checkbox" value="${Number.parseInt(com.enabled, 10)}" ?checked=${Number.parseInt(com.enabled, 10) === 1} />
+                    <input tabindex="-1" id="${com.name + com.clientId}" type="checkbox" value=${Number.parseInt(com.enabled, 10)} ?checked=${Number.parseInt(com.enabled, 10)} />
                     <label for="${com.name + com.clientId}">${Number.parseInt(com.enabled, 10) === 1 ? 'Enabled' : 'Disabled'}</label>
                   </div>
                 </td>
@@ -83,100 +99,51 @@ class ComponentCreator extends HTMLElement {
 
       <hr/>
       <button onclick="${this.onCreate}">Computer, build me the plugin...</button>`,
-  );
-  }
+		);
+	}
 
-  updState(type, prop, value, index) {
-    if (this.store[type]?.length && this.store[type][index]) {
-      this.store[type][index][prop] = Number.parseInt(value, 10)
-    }
-  }
+	updState(type, prop, value, index) {
+		if (
+			this.store[type] &&
+			this.store[type].length &&
+			this.store[type][index]
+		) {
+			this.store[type][index][prop] = parseInt(value, 10);
+		}
+	}
 
-  onClick(event) {
-    if (event.key && [32, 13].indexOf(event.keyCode) < 0) return;
+	onSelectChange(event) {
+		const sel = event.target;
+		this.jVersion = parseInt(sel.options[sel.selectedIndex].value, 10);
 
-    let el = event.target;
-    if (el.tagName.toLowerCase() !== 'tr') {
-      el = el.closest('tr'); // this.findAncestorByTagName(el, 'tr')
-    }
+		resetStore(this, this.data.data, `j${this.jVersion}`);
+		// console.log(this.data.data[`j${this.jVersion}`])
+		this.renderEl();
+	}
 
-    this.updState(el.getAttribute('type'), el.getAttribute('prop'), el.getAttribute('value'), el.getAttribute('index'))
-    event.preventDefault();
-    event.stopPropagation()
-    this.renderEl()
-  }
+	onClick(event) {
+		if (event.key && [32, 13].indexOf(event.keyCode) < 0) return;
 
-  async onCreate(ev) {
-    ev.preventDefault;
-    generateZip(this);
-  }
+		let el = event.target;
+		if (el.tagName.toLowerCase() !== 'tr') {
+			el = el.closest('tr'); // this.findAncestorByTagName(el, 'tr')
+		}
 
-  reset(that) {
-    // // Hard reset
-    // this.store = {
-    //   component: [],
-    //   plugin: [],
-    //   module: [],
-    //   template: [],
-    // };
+		this.updState(
+			el.getAttribute('type'),
+			el.getAttribute('prop'),
+			el.getAttribute('value'),
+			el.getAttribute('index'),
+		);
+		event.preventDefault();
+		event.stopPropagation();
+		this.renderEl();
+	}
 
-    const dataElement = document.getElementById('data');
-    const dbElement = document.getElementById('db');
-
-    console.log({
-      files: dataElement.innerText,
-      ext: dbElement.innerText,
-    });
-    if (!dataElement || !dbElement) {
-      throw new Error("Data is missing...");
-    }
-    try {
-      this.files = JSON.parse(dataElement.innerText);
-    } catch (err) {
-      throw new Error('Malformed Files JSON...')
-    }
-    try {
-      this.ext = JSON.parse(dbElement.innerText);
-    } catch (err) {
-      throw new Error('Malformed DB JSON...')
-    }
-
-    if (!this.files || !this.ext) {
-      throw new Error('Data is missing...')
-    }
-
-    this.data = {
-      files: this.files.files,
-      data: this.ext,
-    };
-
-    const tempStore = {
-      component: [],
-      plugin: [],
-      module: [],
-      template: [],
-    };
-    for (const el of this.data.data) {
-      if (el.locked && el.locked === 1) {
-        return;
-      }
-      if (el.protected === 0) {
-        tempStore[el.type].push({
-          name: el.name,
-          folder: el.folder,
-          clientId: el.client_id,
-          enabled: el.enabled,
-        })
-      }
-    }
-
-    tempStore.component = tempStore.component.sort(compare)
-    tempStore.plugin = tempStore.plugin.sort(compare)
-    tempStore.module = tempStore.module.sort(compare)
-    tempStore.template = tempStore.template.sort(compare)
-
-    this.store = tempStore;
-  }
+	async onCreate(ev) {
+		ev.preventDefault;
+		generateZip(this);
+	}
 }
 
 customElements.define('create-joomla-fat-free-plugin', ComponentCreator);
