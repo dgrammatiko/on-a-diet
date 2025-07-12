@@ -6,13 +6,15 @@
   {# <base href="https://dgrammatiko.github.io/on-a-diet/"> #}
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💩</text></svg>">
   <link rel="prelod" href="css/opensans-light-webfont.woff2" as="font/woff2">
-  <link rel="modulepreload" href="js/index.js?v=1">
+  {# <link rel="modulepreload" href="js/index.js"> #}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="Description" content="Remove all the greasy, pure fat stuff from Joomla">
   <title>Hide and hopefuly less seek</title>
   <style>{{ getCss.css | safe}}</style>
-  <script type="module" src="js/index.js?v=1"></script>
+  <script type="module" src="js/index.js"></script>
+  <script id="data" type="application/json">{{ data | dump | safe}}</script>
+  <script id="db" type="application/json">{{ db | dump | safe}}</script>
 </head>
 
 <body>
@@ -22,8 +24,6 @@
     </noscript>
     <p>This is a client side app that will create a plugin to automatically disable useless Joomla extensions</p>
     <p>Source @<a href="https://github.com/dgrammatiko/com_frontpage" target="_blank" rel="noopener nofollow">Github</a></p>
-    <script id="data" type="application/json">{{ data | dump | safe}}</script>
-    <script id="db" type="application/json">{{ db | dump | safe}}</script>
   </create-joomla-fat-free-plugin>
 </body>
 

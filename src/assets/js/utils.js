@@ -1,52 +1,9 @@
-const compare = (a, b) => {
-  // Ignore character casing
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-
-  let comparison = 0;
-  if (nameA > nameB) {
-    comparison = 1;
-  } else if (nameA < nameB) {
-    comparison = -1;
-  }
-  return comparison;
-}
-
-const resetStore = (elClass, data) => {
-  // Hard reset
-  elClass.store = {
-    component: [],
-    plugin: [],
-    module: [],
-    template: [],
+const generateZip = async(scoped) => {
+  const addFile = async (fileName, contents, BlobReader) => {
+    const theBlob = new Blob([contents], { type: "text/plain" });
+    await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
   };
 
-  data['j4'].forEach(el => {
-    if (el.locked && el.locked === 1) {
-      return;
-    }
-    if (el.protected === 0) {
-      elClass.store[el.type].push({
-        name: el.name,
-        folder: el.folder,
-        clientId: el.client_id,
-        enabled: el.enabled,
-      })
-    }
-  });
-
-  elClass.store.component = elClass.store.component.sort(compare)
-  elClass.store.plugin = elClass.store.plugin.sort(compare)
-  elClass.store.module = elClass.store.module.sort(compare)
-  elClass.store.template = elClass.store.template.sort(compare)
-}
-
-const addFile = async(fileName, contents, elClass, BlobReader) => {
-  const theBlob = new Blob([contents], { type: "text/plain" });
-  await elClass.ZipWriter.add(fileName, new BlobReader(theBlob));
-}
-
-const generateZip = async(elClass) => {
   const {configure, BlobReader, BlobWriter, ZipReader, ZipWriter} = await import('@zip.js/zip.js/lib/zip.js');
 
   configure({
@@ -54,27 +11,29 @@ const generateZip = async(elClass) => {
   });
 
   // console.log(BlobReader, BlobWriter, ZipReader, ZipWriter)
-  elClass.writer = new BlobWriter("application/zip");
-  elClass.ZipWriter = new ZipWriter(elClass.writer);
+  scoped.writer = new BlobWriter("application/zip");
+  scoped.ZipWriter = new ZipWriter(scoped.writer);
   let blobURL;
   const queue = [];
   const files = {};
-  const data = elClass.data.files;// @todo add different versions [`v${elClass.jVersion}`]
-  Object.keys(data).map(el => files[el] = data[el]);
-  const replacement = makeDastscript(elClass.store)
-  files['script.php'] = elClass.data.files['script.php'].replace('/**{{replacement}}**/', replacement);
+  const data = scoped.data.files;// @todo add different versions [`v${scoped.jVersion}`]
+  Object.keys(data).map((el) => {
+    files[el] = data[el];
+  });
+  const replacement = makeDastscript(scoped.store)
+  files['script.php'] = scoped.data.files['script.php'].replace('/**{{replacement}}**/', replacement);
 
-  Object.keys(files).map(el => queue.push(addFile(`${el}`, files[el], elClass, BlobReader)));
+  Object.keys(files).map(el => queue.push(addFile(`${el}`, files[el], scoped, BlobReader)));
   await Promise.all(queue);
-  const zipReader = new ZipReader(new BlobReader(await elClass.ZipWriter.close()));
+  const zipReader = new ZipReader(new BlobReader(await scoped.ZipWriter.close()));
 
   try {
     await zipReader.close();
-    blobURL = URL.createObjectURL(await elClass.writer.getData());
-    elClass.ZipWriter = null;
-    let a = document.createElement('a');
+    blobURL = URL.createObjectURL(await scoped.writer.getData());
+    scoped.ZipWriter = null;
+    const a = document.createElement('a');
     a.href = blobURL;
-    a.download = `com_remove_joomla_fat.zip`;
+    a.download = 'remove_joomla_fat.zip';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -84,36 +43,34 @@ const generateZip = async(elClass) => {
 }
 
 const makeDastscript = (data) => {
-  let txt = `$useless = array(`;
+  let txt = `        private $useless = [`;
 
-  ['component', 'plugin', 'module', 'template'].forEach(type => {
-    // data =this.store
-    data[type].forEach(el => {
+  for (const type of ['component', 'plugin', 'module', 'template']) {
+    for (const el of data[type]) {
       txt += `
-      '${el.name}' => array(`;
-
+      '${el.name}' => [`;
       if (type === 'component') {
         txt +=`'type' => 'component',`
       }
       if (type === 'module') {
-        txt +=`'type' => 'module', 'client_id' => ${parseInt(el.clientId, 10)},`
+        txt +=`'type' => 'module', 'client_id' => ${Number.parseInt(el.clientId, 10)},`
       }
       if (type === 'plugin') {
         txt +=`'type' => 'plugin', 'folder' => '${el.folder}'`;
       }
       if (type === 'template') {
-        txt +=`'type' => '"template"', 'client_id' => ${parseInt(el.clientId, 10)},`;
+        txt +=`'type' => '"template"', 'client_id' => ${Number.parseInt(el.clientId, 10)},`;
       }
 
       txt +=`'enabled' => ${el.enabled}`
-      txt +=`),`
-    });
-  });
+      txt +=`],`;
+    }
+  }
 
   txt += `
-  );`;
+  ];`;
 
   return txt;
 }
 
-export { resetStore, generateZip };
+export { generateZip };

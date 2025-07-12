@@ -1,67 +1,51 @@
 import {render, html} from 'uhtml';
-import { resetStore, generateZip } from './utils.js';
+import { generateZip } from './utils.js';
+
+const compare = (a, b) => {
+  // Ignore character casing
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  let comparison = 0;
+  if (nameA > nameB) {
+    comparison = 1;
+  } else if (nameA < nameB) {
+    comparison = -1;
+  }
+  return comparison;
+}
 
 class ComponentCreator extends HTMLElement {
   constructor() {
     super()
 
-    this.jVersion = 4;
-    this.store = {};
+    this._store = {};
     this.renderEl = this.renderEl.bind(this);
     this.updState = this.updState.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onCreate = this.onCreate.bind(this);
-    this.onSelectChange = this.onSelectChange.bind(this);
+    this.reset = this.reset.bind(this);
+    this.reset(this);
+  }
+
+  set store(val) {
+    this._store = val;
+  }
+  get store() {
+    return this._store;
   }
 
   connectedCallback() {
-    let files, data;
-    const jsonEl = document.getElementById('data');
-    const jsonEll = document.getElementById('db');
-    if (!jsonEl || !jsonEll) {
-      throw new Error('Data is missing...')
-    }
-    try {
-      files = JSON.parse(jsonEl.innerText);
-    } catch (err) {
-      throw new Error('Malformed JSON...')
-    }
-    try {
-      data = JSON.parse(jsonEll.innerText);
-    } catch (err) {
-      throw new Error('Malformed JSON...')
-    }
-
-    if (!files || !data) {
-      throw new Error('Data is missing...')
-    }
-
-    this.data = {
-      files: files.files,
-      data: data,
-    }
-
-    resetStore(this, this.data.data, `j${this.jVersion}`);
     this.renderEl();
-    // console.log(this.data.data[`j${this.jVersion}`])
   }
 
   renderEl() {
     render(
       this,
       html`<div>
-        <details>
-          <summary class="h1">Online Joomla's fat-remover plugin creator</summary>
-          <div>
             <p>A simple (client side exclusive) plugin generator. The plugin upon installation will disable (hide) all the extensions you have disabled in the given list.
             The plugin will uninstall itself after that. No extension is uninstalled they are just disabled.</p>
-            </div>
-        </details>
         <hr/>
-        <label> Select your Joomla version
-          <select value=${this.jVersion} oninput=${this.onSelectChange}>
-            ${[4, 3].map(ver => html`<option value="${ver}" .selected="${this.jVersion === ver}">Version ${ver}.x</option>`)}
-          </select>
       </div>
 
       <hr/>
@@ -80,11 +64,13 @@ class ComponentCreator extends HTMLElement {
           <tbody>
           ${this.store[type].map(
             (com, index) => html`
-              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${parseInt(com.enabled,10) === 1 ? 0 : 1}">
+              <tr tabindex="0" onclick="${this.onClick}" onkeydown="${this.onClick}" index="${index}" type="${type}" prop="enabled" value="${Number.parseInt(com.enabled,10) === 1 ? 0 : 1}">
                 <td class="column1"><strong>${com.name.toLowerCase()}</strong></td>
-                ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
+                ${type === 'plugin' ? html`<td class="column2">${com.folder}</td>` : (type === 'module' || type === 'template') ? html`<td class="column2">${Number.parseInt(com.clientId, 10) !== 1 ? 'site' : 'admin'}</td>` : ''}
                 <td class="column2">
                   <div class="inputGroup">
+                    <input tabindex="-1" id="${com.name+com.clientId}" name="option1" type="checkbox" value="${Number.parseInt(com.enabled,10)}" checked="${Number.parseInt(com.enabled,10) === 1 ? true : null}"/>
+                    <label for="${com.name+com.clientId}">${Number.parseInt(com.enabled, 10) === 1 ? 'Enabled' : 'Disabled'}</label>
                     <input tabindex="-1" id="${com.name+com.clientId}" type="checkbox" .value=${parseInt(com.enabled,10)} .checked=${() => parseInt(com.enabled,10) === 1 ? true : false} />
                     <label for="${com.name+com.clientId}">${parseInt(com.enabled,10) === 1 ? 'Enabled' : 'Disabled'}</label>
                   </div>
@@ -100,18 +86,9 @@ class ComponentCreator extends HTMLElement {
   }
 
   updState(type, prop, value, index) {
-    if (this.store[type] && this.store[type].length && this.store[type][index]) {
-      this.store[type][index][prop] = parseInt(value, 10)
+    if (this.store[type]?.length && this.store[type][index]) {
+      this.store[type][index][prop] = Number.parseInt(value, 10)
     }
-  }
-
-  onSelectChange(event) {
-    const sel = event.target;
-    this.jVersion = parseInt(sel.options[sel.selectedIndex].value, 10);
-
-    resetStore(this, this.data.data, `j${this.jVersion}`);
-    // console.log(this.data.data[`j${this.jVersion}`])
-    this.renderEl();
   }
 
   onClick(event) {
@@ -131,6 +108,73 @@ class ComponentCreator extends HTMLElement {
   async onCreate(ev) {
     ev.preventDefault;
     generateZip(this);
+  }
+
+  reset(that) {
+    // // Hard reset
+    // this.store = {
+    //   component: [],
+    //   plugin: [],
+    //   module: [],
+    //   template: [],
+    // };
+
+    const dataElement = document.getElementById('data');
+    const dbElement = document.getElementById('db');
+
+    console.log({
+      files: dataElement.innerText,
+      ext: dbElement.innerText,
+    });
+    if (!dataElement || !dbElement) {
+      throw new Error("Data is missing...");
+    }
+    try {
+      files = JSON.parse(dataElement.innerText);
+    } catch (err) {
+      throw new Error('Malformed Files JSON...')
+    }
+    try {
+      ext = JSON.parse(dbElement.innerText);
+    } catch (err) {
+      throw new Error('Malformed DB JSON...')
+    }
+
+    if (!files || !ext) {
+      throw new Error('Data is missing...')
+    }
+
+    const data = {
+      files: files.files,
+      data: ext,
+    };
+
+    const tempStore = {
+      component: [],
+      plugin: [],
+      module: [],
+      template: [],
+    };
+    for (const el of data.ext) {
+      if (el.locked && el.locked === 1) {
+        return;
+      }
+      if (el.protected === 0) {
+        tempStore[el.type].push({
+          name: el.name,
+          folder: el.folder,
+          clientId: el.client_id,
+          enabled: el.enabled,
+        })
+      }
+    }
+
+    tempStore.component = tempStore.component.sort(compare)
+    tempStore.plugin = tempStore.plugin.sort(compare)
+    tempStore.module = tempStore.module.sort(compare)
+    tempStore.template = tempStore.template.sort(compare)
+
+    this.store = tempStore;
   }
 }
 

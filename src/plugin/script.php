@@ -1,19 +1,20 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') || die();
 
 use Joomla\CMS\Factory;
 
 class plgSystemRemovefatInstallerScript {
+  /**{{replacement}}**/
+
   public function __construct(JAdapterInstance $adapter) {
-    $this->minimumJoomla = '3.9';
-    $this->minimumPhp = JOOMLA_MINIMUM_PHP;
+    $this->minimumJoomla = '5.0.0';
+    $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
   }
+
   public function install(JAdapterInstance $adapter) {
     $db = Factory::getDbo();
 
-    /**{{replacement}}**/
-
-    foreach ($useless as $element => $options ) {
+    foreach ($this->useless as $element => $options ) {
       $query = $db->getQuery(true)
       ->update('#__extensions')
       ->set($db->qn('enabled') . ' = ' . (int) $options['enabled'])
@@ -40,6 +41,7 @@ class plgSystemRemovefatInstallerScript {
       try { $db->execute(); } catch (\Exception $e) { }
     }
   }
+
   public function postflight($type, $parent) {
     if ($type === 'install' || $type === 'discover_install') {
       $db = Factory::getDbo();
@@ -57,9 +59,6 @@ class plgSystemRemovefatInstallerScript {
       } catch (\Exception $e) { }
 
       if (is_dir(JPATH_ROOT . '/plugins/system/removefat')) {
-        if (is_file(JPATH_ROOT . '/plugins/system/removefat/removefat.php')) {
-          unlink(JPATH_ROOT . '/plugins/system/removefat/removefat.php');
-        }
         if (is_file(JPATH_ROOT . '/plugins/system/removefat/removefat.xml')) {
           unlink(JPATH_ROOT . '/plugins/system/removefat/removefat.xml');
         }

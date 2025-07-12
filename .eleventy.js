@@ -1,4 +1,4 @@
-module.exports = function(eleventyConfig) {
+export default function(eleventyConfig) {
   eleventyConfig.setDataDeepMerge(true);
 
   eleventyConfig.addPassthroughCopy("11ty/js");
@@ -21,7 +21,6 @@ module.exports = function(eleventyConfig) {
       input: "11ty",
       includes: "_includes",
       data: "_data",
-      output: "docs"
     }
   };
 };

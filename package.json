@@ -3,25 +3,26 @@
   "version": "0.0.1",
   "description": "remove Joomla's fat",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "eleventy --pathprefix=\"/\"",
-    "docs": "eleventy --pathprefix=\"/\"",
+    "test": "eleventy",
+    "docs": "eleventy",
     "11ty": "eleventy --serve",
-    "build": "node build.js && eleventy --pathprefix=\"/\""
+    "build": "node build.js && eleventy --serve"
   },
   "author": "Dimitrios Grammatikogiannis",
   "license": "MIT",
   "dependencies": {
-    "@zip.js/zip.js": "^2.2.12",
-    "naf-css": "^3.0.0",
+    "@zip.js/zip.js": "^2.7.46",
+    "naf-css": "^3.0.3",
     "uhtml": "^4.7.1"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.2",
     "@rollup/plugin-node-resolve": "16.0.1",
-    "rimraf": "6.0.1",
-    "rollup": "4.45.0",
-    "rollup-plugin-html-literals": "2.0.0",
-    "@rollup/plugin-terser": "0.4.4"
+    "@rollup/plugin-terser": "0.4.4",
+    "rimraf": "5.0.1",
+    "rollup": "^4.45.0",
+    "rollup-plugin-html-literals": "^2.0.0"
   }
 }

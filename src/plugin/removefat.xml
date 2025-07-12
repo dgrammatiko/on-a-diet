@@ -10,7 +10,4 @@
   <version>0.0.1</version>
   <description>Automagically disables what needs to be disabled</description>
   <scriptfile>script.php</scriptfile>
-  <files>
-    <filename plugin="removefat">removefat.php</filename>
-  </files>
 </extension>
