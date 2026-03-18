@@ -18,7 +18,7 @@
     "uhtml": "^5.0.0"
   },
   "devDependencies": {
-    "@11ty/eleventy": "3.1.2",
+    "@11ty/eleventy": "3.1.5",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "1.0.0",
     "rimraf": "6.1.3",
